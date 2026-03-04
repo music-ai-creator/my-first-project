@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐AI创作器 - 创作页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        .header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .back-btn {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1rem;
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .btn {
+            padding: 12px 30px;
+            background: #fff;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .output {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🎵 音乐AI创作器</div>
+        <a href=" " class="back-btn">返回首页</a >
+    </div>
+    <div class="container">
+        <div class="card">
+            <h1>开始创作你的音乐</h1>
+            <div class="input-group">
+                <label for="prompt">输入创作灵感</label>
+                <textarea id="prompt" placeholder="例如：一首充满力量的摇滚歌曲，表达90后的梦想与坚持..." rows="4"></textarea>
+            </div>
+            <div class="input-group">
+                <label for="genre">选择音乐风格</label>
+                <select id="genre">
+                    <option value="pop">流行 Pop</option>
+                    <option value="rock">摇滚 Rock</option>
+                    <option value="electronic">电子 Electronic</option>
+                    <option value="classical">古典 Classical</option>
+                    <option value="folk">民谣 Folk</option>
+                </select>
+            </div>
+            <div class="btn-group">
+                <button class="btn" onclick="generateMusic()">生成音乐</button>
+            </div>
+            <div id="output" class="output" style="display: none;">
+                正在生成中...
+            </div>
+        </div>
+    </div>
+    <script>
+        function generateMusic() {
+            const prompt = document.getElementById('prompt').value;
+            const genre = document.getElementById('genre').value;
+            const output = document.getElementById('output');
+            
+            if (!prompt) {
+                alert('请输入创作灵感！');
+                return;
+            }
+            
+            output.style.display = 'block';
+            output.textContent = `🎵 正在根据你的灵感生成 ${genre} 音乐...\n\n灵感：${prompt}\n\n（这里可以接入真实的AI音乐生成API）`;
+        }
+    </script>
+</body>
+</html>
