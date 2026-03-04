@@ -33,7 +33,7 @@
             font-size: 2rem;
             margin-bottom: 20px;
         }
-        .back-btn {
+        .btn {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 20px;
@@ -49,7 +49,7 @@
     <div class="container">
         <h1>🎵 音乐AI创作器</h1>
         <p>创作页面已恢复正常！</p >
-        <a href=" " class="back-btn">返回首页</a >
+        <a href="index.htmI" class="btn">返回首页</a>
     </div>
 </body>
 </html>
