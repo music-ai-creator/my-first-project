@@ -1,61 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>AI生成歌曲</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#121212;color:#fff;font-family:Arial,pingfang;padding:20px;padding-bottom:70px}
-.card{background:#1e1e2e;padding:20px;border-radius:16px;margin:10px 0}
-button{width:100%;padding:15px;background:#00d4ff;color:#000;border:none;border-radius:10px;font-weight:bold;margin-top:10px}
-audio{width:100%;margin-top:15px}
-.back{position:fixed;bottom:10px;left:20px;right:20px;padding:14px;background:#1e1e2e;color:#fff;border-radius:10px;text-align:center}
-.ad-tip{color:#00d4ff;font-size:12px;margin-top:5px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐AI创作器 - 创作页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #fff;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<h2>🎧 AI生成歌曲</h2>
-<div class="card">
-  <p>输入歌词或风格</p >
-  <textarea style="width:100%;height:120px;padding:12px;border-radius:10px;background:#2d2d3f;color:#fff;border:none" placeholder="粘贴歌词或写风格"></textarea>
-  <button onclick="genMusic()">生成音乐</button>
-  <button onclick="downMusic()">下载音乐</button>
-  <div class="ad-tip">💡 下载前观看广告获得权限</div>
-  <audio controls src="#" id="audio" style="display:none">
-</div>
-<div class="back" onclick="go('index')">返回首页</div>
-
-<script>
-var genMusicCount=0
-function genMusic(){
-  genMusicCount++
-  if(genMusicCount>=2){
-    alert("观看广告继续生成")
-    showAd().then(()=>{genMusicCount=0})
-    return
-  }
-  document.getElementById("audio").style.display="block"
-  alert("音乐生成成功！")
-}
-function downMusic(){
-  alert("先观看广告即可下载到本地")
-  showAd().then(()=>{alert("开始下载音乐！")})
-}
-
-function go(p){location.href=p+".html"}
-
-var adConfig={coin:0,cash:0,adReward:100,signReward:100,inviteReward:1000,rate:10000}
-function loadCoin(){var c=localStorage.getItem("coin");if(c)adConfig.coin=Number(c)}
-function showAd(){
-  return new Promise(r=>{
-    alert("🎬 广告播放完成！+"+adConfig.adReward+"金币")
-    adConfig.coin+=adConfig.adReward
-    localStorage.setItem("coin",adConfig.coin)
-    r(true)
-  })
-}
-window.onload=loadCoin
-</script>
+    <div class="container">
+        <h1>🎵 音乐AI创作器</h1>
+        <p>创作页面已恢复正常！</p >
+        <a href="index.htmI " class="back-btn">返回首页</a >
+    </div>
 </body>
 </html>
