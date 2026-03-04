@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>个人中心</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#121212;color:#fff;font-family:Arial,pingfang;padding:20px;padding-bottom:70px}
+.card{background:#1e1e2e;padding:20px;border-radius:16px;margin:10px 0}
+.btn{background:#00d4ff;color:#000;padding:14px;border-radius:10px;text-align:center;margin-top:10px;font-weight:bold}
+</style>
+</head>
+<body>
+<h2>👤 个人中心</h2>
+<div class="card">
+  <p>账号：138****8888</p >
+  <p>金币：<span id="coin">0</span></p >
+  <p>余额：<span id="cash">0.00</span> 元</p >
+</div>
+<div class="card">
+  <div class="btn">我的作品</div>
+  <div class="btn">我的收藏</div>
+  <div class="btn">会员中心</div>
+  <div class="btn">帮助中心</div>
+  <div class="btn" onclick="logout()">退出登录</div>
+</div>
+
+<script>
+var adConfig={coin:0,cash:0,rate:10000}
+function loadCoin(){
+  var c=localStorage.getItem("coin");if(c)adConfig.coin=Number(c)
+  adConfig.cash=(adConfig.coin/adConfig.rate).toFixed(2)
+  document.getElementById("coin").innerText=adConfig.coin
+  document.getElementById("cash").innerText=adConfig.cash
+}
+function logout(){
+  alert("退出成功！")
+  location.href="login.html"
+}
+window.onload=loadCoin
+</script>
+</body>
+</html>
