@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>AI写歌词</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#121212;color:#fff;font-family:Arial,pingfang;padding:20px;padding-bottom:70px}
+.card{background:#1e1e2e;padding:20px;border-radius:16px;margin:10px 0}
+textarea{width:100%;height:120px;padding:12px;border-radius:10px;background:#2d2d3f;color:#fff;border:none;margin:10px 0}
+button{width:100%;padding:15px;background:#00d4ff;color:#000;border:none;border-radius:10px;font-weight:bold}
+.result{background:#2d2d3f;padding:15px;border-radius:10px;margin-top:15px;line-height:1.6}
+.back{position:fixed;bottom:10px;left:20px;right:20px;padding:14px;background:#1e1e2e;color:#fff;border-radius:10px;text-align:center}
+.ad-tip{color:#00d4ff;font-size:12px;margin-top:5px}
+</style>
+</head>
+<body>
+<h2>📝 AI写歌词</h2>
+<div class="card">
+  <p>输入主题/风格/情绪</p >
+  <textarea placeholder="例如：伤感、流行、爱情、梦想"></textarea>
+  <button onclick="genLyric()">立即生成</button>
+  <div class="ad-tip">💡 生成3次后看广告继续</div>
+  <div class="result" id="result" style="display:none"></div>
+</div>
+<div class="back" onclick="go('index')">返回首页</div>
+
+<script>
+var genCount=0
+function genLyric(){
+  genCount++
+  if(genCount>=3){
+    alert("观看广告继续生成")
+    showAd().then(()=>{genCount=0})
+    return
+  }
+  document.getElementById("result").style.display="block"
+  document.getElementById("result").innerText="【AI生成歌词】\n走过多少春秋\n才懂真心难留\n风轻轻吹走\n那些年少的梦\n你转身以后\n我只剩沉默\n也许爱过就足够"
+}
+
+function go(p){location.href=p+".html"}
+
+var adConfig={coin:0,cash:0,adReward:100,signReward:100,inviteReward:1000,rate:10000}
+function loadCoin(){var c=localStorage.getItem("coin");if(c)adConfig.coin=Number(c)}
+function showAd(){
+  return new Promise(r=>{
+    alert("🎬 广告播放完成！+"+adConfig.adReward+"金币")
+    adConfig.coin+=adConfig.adReward
+    localStorage.setItem("coin",adConfig.coin)
+    r(true)
+  })
+}
+window.onload=loadCoin
+</script>
+</body>
+</html>
