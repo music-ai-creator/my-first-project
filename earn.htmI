@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>赚钱中心</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#121212;color:#fff;font-family:Arial,pingfang;padding:20px;padding-bottom:70px}
+.title{font-size:22px;margin-bottom:15px;color:#00d4ff}
+.card{background:#1e1e2e;padding:20px;border-radius:16px;margin:10px 0}
+.btn{background:#00d4ff;color:#000;padding:14px;border-radius:10px;text-align:center;margin-top:12px;font-weight:bold}
+</style>
+</head>
+<body>
+<h2 class="title">💰 赚钱中心</h2>
+<div class="card">
+  <p>当前金币：<span id="coin">0</span></p >
+  <p>可提现：<span id="cash">0.00</span> 元</p >
+</div>
+<div class="card">
+  <h3>每日签到</h3>
+  <p>签到 +100 金币</p >
+  <div class="btn" onclick="sign()">立即签到</div>
+</div>
+<div class="card">
+  <h3>看广告赚钱</h3>
+  <p>每次 50~200 金币</p >
+  <div class="btn" onclick="watchAd()">看广告赚金币</div>
+</div>
+<div class="card">
+  <h3>邀请好友</h3>
+  <p>邀请1人 +1000 金币</p >
+  <div class="btn" onclick="invite()">立即邀请</div>
+</div>
+<div class="card">
+  <h3>金币提现</h3>
+  <p>满5元可提现</p >
+  <div class="btn" onclick="cash()">去提现</div>
+</div>
+<div class="btn" onclick="go('index')" style="margin-top:20px">返回首页</div>
+
+<script>
+var adConfig={coin:0,cash:0,adReward:100,signReward:100,inviteReward:1000,rate:10000}
+
+function loadCoin(){
+  var c=localStorage.getItem("coin");if(c)adConfig.coin=Number(c)
+  adConfig.cash=(adConfig.coin/adConfig.rate).toFixed(2)
+  showCoin()
+}
+function showCoin(){
+  document.getElementById("coin").innerText=adConfig.coin
+  document.getElementById("cash").innerText=adConfig.cash
+}
+function saveCoin(){localStorage.setItem("coin",adConfig.coin)}
+
+function sign(){
+  alert("✅ 签到成功！+100金币")
+  adConfig.coin+=adConfig.signReward;saveCoin();showCoin()
+}
+function watchAd(){
+  alert("🎬 广告播放完成！+"+adConfig.adReward+"金币")
+  adConfig.coin+=adConfig.adReward;saveCoin();showCoin()
+}
+function invite(){alert("🔗 邀请链接已复制！")}
+function cash(){
+  if(adConfig.cash<5)alert("❌ 需满5元才可提现")
+  else alert("✅ 提现申请已提交！1-3天到账")
+}
+function go(p){location.href=p+".html"}
+
+window.onload=loadCoin
+</script>
+</body>
+</html>
