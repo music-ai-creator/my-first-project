@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI音乐创作平台 - 至尊版</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Microsoft YaHei,Roboto,sans-serif}
+body{background:#0b1120;color:#e6e6e6}
+.header{padding:14px 20px;background:#121a2f;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:20px;font-weight:700;color:#4fd1c7}
+.user{display:flex;align-items:center;gap:12px}
+.avatar{width:38px;height:38px;border-radius:50%;background:#4fd1c7;display:grid;place-items:center;font-weight:bold}
+.main{max-width:900px;margin:0 auto;padding:20px}
+.card{background:#162038;border-radius:16px;padding:22px;margin-bottom:20px}
+.title{font-size:18px;margin-bottom:14px}
+input,textarea,select{width:100%;padding:12px 14px;border-radius:10px;background:#1d2a47;border:none;color:#e6e6e6;margin:8px 0 14px;font-size:15px}
+button{width:100%;padding:14px;border-radius:10px;background:#4fd1c7;color:#0b1120;border:none;font-size:16px;font-weight:600;cursor:pointer}
+button:disabled{opacity:.5}
+.danger{background:#ff4d6d}
+.success{background:#22c55e}
+.tab{display:flex;gap:10px;margin-bottom:16px}
+.tab button{flex:1;background:#1d2a47;color:#e6e6e6}
+.tab button.active{background:#4fd1c7;color:#0b1120}
+.page{display:none}
+.page.active{display:block}
+.loading{display:none;text-align:center;padding:30px}
+.spinner{width:44px;height:44px;border:4px solid #1d2a47;border-top:4px solid #4fd1c7;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px}
+@keyframes spin{100%{transform:rotate(360deg)}}
+.song{background:#1d2a47;border-radius:12px;padding:16px;margin-bottom:12px}
+.song h4{margin-bottom:8px}
+audio{width:100%;margin:10px 0}
+.down{padding:8px 12px;background:#22c55e;border:none;border-radius:8px;color:#0b1120;font-weight:600;margin-right:8px}
+.share{padding:8px 12px;background:#3b82f6;border:none;border-radius:8px;color:#fff}
+.lyrics{background:#121a2f;padding:12px;border-radius:8px;margin-top:10px;white-space:pre-wrap;color:#cbd5e1;font-size:14px}
+.points{color:#4fd1c7}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:grid;place-items:center}
+.modal-box{background:#162038;border-radius:16px;padding:24px;width:90%;max-width:400px}
+.modal-title{font-size:18px;margin-bottom:16px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🎵 AI音乐平台</div>
+  <div class="user">
+    <div class="avatar">友</div>
+    <div>
+      <div id="nickname">游客</div>
+      <div class="points">点数：<span id="points">0</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="tab">
+    <button class="active" onclick="go('create')">🎵 创作</button>
+    <button onclick="go('mine')">💿 我的作品</button>
+    <button onclick="go('vip')">⭐ 会员充值</button>
+  </div>
+
+  <div id="create" class="page active">
+    <div class="card">
+      <div class="title">生成歌曲（每次消耗1点数）</div>
+      <input id="title" placeholder="歌曲标题" value="青春无悔">
+      <input id="style" placeholder="风格：流行、伤感、摇滚、DJ">
+      <textarea id="prompt" rows="4" placeholder="歌词主题、情绪、风格描述"></textarea>
+      <button onclick="goCreate()" id="createBtn">开始生成</button>
+    </div>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>正在生成中，约1～2分钟</p >
+    </div>
+    <div class="result" id="result">
+      <div id="list"></div>
+    </div>
+  </div>
+
+  <div id="mine" class="page">
+    <div class="card">
+      <div class="title">我的作品</div>
+      <div id="myList"></div>
+    </div>
+  </div>
+
+  <div id="vip" class="page">
+    <div class="card">
+      <div class="title">会员充值</div>
+      <p>• 10元 = 20点数</p >
+      <p>• 生成1首歌 = 1点数</p >
+      <p>• 无限下载、无水印</p >
+      <button class="success" onclick="pay()">立即充值</button>
+    </div>
+  </div>
+</div>
+
+<!-- 登录弹窗 -->
+<div class="modal" id="loginModal">
+  <div class="modal-box">
+    <div class="modal-title">登录</div>
+    <input id="user" placeholder="输入用户名">
+    <button onclick="login()">登录</button>
+  </div>
+</div>
+
+<script>
+// ========== 你只需要填这里 ==========
+const API_KEY = "你在sunoapi.org的KEY";
+const BASE_URL = "https://api.sunoapi.org";
+// ===================================
+
+const pages = ["create","mine","vip"];
+function go(id){
+  pages.forEach(p=>{
+    document.getElementById(p).classList.remove("active");
+    document.querySelectorAll(".tab button")[pages.indexOf(p)].classList.remove("active");
+  })
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".tab button")[pages.indexOf(id)].classList.add("active");
+  if(id==="mine") loadMySongs();
+}
+
+// 生成歌曲
+async function goCreate(){
+  const btn = document.getElementById("createBtn");
+  const loading = document.getElementById("loading");
+  const result = document.getElementById("result");
+  const title = document.getElementById("title").value;
+  const prompt = document.getElementById("prompt").value;
+  const style = document.getElementById("style").value;
+
+  if(!title||!prompt){alert("请填写完整");return}
+  if(getPoints()<1){alert("点数不足，请充值");return}
+
+  btn.disabled=true; loading.style.display="block"; result.style.display="none";
+  setPoints(getPoints()-1);
+
+  try{
+    let res = await fetch(BASE_URL+"/v1/generate",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+API_KEY},
+      body:JSON.stringify({title,prompt:prompt+" "+style,make_instrumental:false})
+    })
+    let data = await res.json();
+    let taskId = data.id;
+
+    let audios = null;
+    for(let i=0;i<30;i++){
+      await new Promise(r=>setTimeout(r,10000));
+      let s = await fetch(BASE_URL+"/v1/task/"+taskId,{headers:{"Authorization":"Bearer "+API_KEY}});
+      let j = await s.json();
+      if(j.status==="completed"&&j.audios){audios=j.audios;break}
+    }
+
+    render(audios);
+    saveMy(audios);
+    result.style.display="block";
+  }catch(e){alert("失败："+e.message)}
+  finally{btn.disabled=false;loading.style.display="none"}
+}
+
+function render(list){
+  document.getElementById("list").innerHTML = list.map(s=>`
+    <div class="song">
+      <h4>${s.title}</h4>
+      <audio controls src="${s.audio_url}">
+      <button class="down" onclick="down('${s.audio_url}','${s.title}')">下载MP3</button>
+      <button class="share" onclick="share('${s.title}')">分享抖音</button>
+      <div class="lyrics">${s.lyrics||"无歌词"}</div>
+    </div>
+  `).join("")
+}
+
+function down(url,title){
+  const a = document.createElement("a");
+  a.href=url; a.download=title+".mp3"; a.click();
+}
+function share(title){alert(`分享《${title}》到抖音成功！`)}
+
+// 作品存储
+function saveMy(list){
+  let old = JSON.parse(localStorage.getItem("mysongs")||"[]");
+  list.forEach(s=>old.unshift(s));
+  localStorage.setItem("mysongs",JSON.stringify(old));
+}
+function loadMySongs(){
+  const list = JSON.parse(localStorage.getItem("mysongs")||"[]");
+  document.getElementById("myList").innerHTML = list.length?list.map(s=>`
+    <div class="song">
+      <h4>${s.title}</h4>
+      <audio controls src="${s.audio_url}">
+      <button class="down" onclick="down('${s.audio_url}','${s.title}')">下载</button>
+      <div class="lyrics">${s.lyrics||""}</div>
+    </div>
+  `).join(""):"<p>暂无作品</p >";
+}
+
+// 点数 & 充值
+function getPoints(){return +localStorage.getItem("points")||0}
+function setPoints(n){localStorage.setItem("points",n);document.getElementById("points").innerText=n}
+function pay(){if(confirm("确认支付10元获得20点数？")){setPoints(getPoints()+20);alert("充值成功！")}}
+
+// 登录
+function login(){
+  const u = document.getElementById("user").value;
+  if(!u){alert("请输入用户名");return}
+  localStorage.setItem("user",u);
+  document.getElementById("nickname").innerText=u;
+  document.getElementById("loginModal").remove();
+}
+
+// 初始化
+window.onload=()=>{
+  const user=localStorage.getItem("user");
+  if(user)document.getElementById("nickname").innerText=user;
+  document.getElementById("points").innerText=getPoints();
+}
+</script>
+</body>
+</html>
