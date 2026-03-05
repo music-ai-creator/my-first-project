@@ -130,8 +130,8 @@
             color: #6a737d;
         }
     </style>
-</head>
-<body>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
     <div class="wave-bg">
         <div class="wave"></div>
         <div class="wave" style="animation-delay: -5s; opacity: 0.2;"></div>
@@ -234,3 +234,11 @@
     </script>
 </body>
 </html>
+<div class="container">
+    <!-- 这里是你原来的页面内容 -->
+</div>
+
+<footer>
+    <p>Powered by GitHub Pages | &copy; 2026 Music AI Creator</p >
+</footer>
+
