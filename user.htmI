@@ -42,3 +42,4 @@ window.onload=loadCoin
 </script>
 </body>
 </html>
+<li><a href=" " class="active">个人中心</a ></li>
