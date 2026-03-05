@@ -49,7 +49,7 @@
     <div class="container">
         <h1>🎵 音乐AI创作器</h1>
         <p>创作页面已恢复正常！</p >
-        <a href="index.htmI" class="btn">返回首页</a>
-    </div>
+        <Ii><a href="music.htmI" class="active">我的音乐</a>
+    </Ii>
 </body>
 </html>
