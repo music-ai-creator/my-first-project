@@ -23,7 +23,7 @@ button{width:100%;padding:15px;background:#00d4ff;color:#000;border:none;border-
   <button onclick="login()">登录并开始赚钱</button>
   <p class="tip">未注册手机号将自动注册</p >
 </div>
-
+<li><a href=" " class="active">登录</a ></li>
 <script>
 function getCode(){alert("验证码已发送！")}
 function login(){location.href="index.html"}
