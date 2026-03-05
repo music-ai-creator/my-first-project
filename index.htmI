@@ -241,4 +241,32 @@
 <footer>
     <p>Powered by GitHub Pages | &copy; 2026 Music AI Creator</p >
 </footer>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music AI Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f8fa;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #24292e;
+        }
+        p {
+            color: #586069;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 Music AI Creator</h1>
+    <p>我的第一个 GitHub Pages 站点</p >
+    <p>访问地址: <a href=" " target="_blank">https://music-ai-creator.github.io/my-first-project/</a ></p >
+</body>
+</html>
+
 
