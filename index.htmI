@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>音乐AI创作器 - My First Project</title>
+    <title>Music AI Creator | 我的第一个站点</title>
     <style>
         * {
             margin: 0;
@@ -11,64 +11,226 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e6e6e6;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
+            overflow-x: hidden;
         }
         .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 20px;
             text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 40px 60px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+        .wave-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            width: 200%;
+            height: 120px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='1' d='M0,160L48,165.3C96,171,192,181,288,165.3C384,149,480,107,576,112C672,117,768,171,864,181.3C960,192,1056,160,1152,138.7C1248,117,1344,107,1392,101.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+            background-size: 1440px 120px;
+            animation: wave 15s linear infinite;
+        }
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-1440px); }
         }
         h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
-            letter-spacing: 2px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
+        .subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            color: #a8b2d1;
+        }
+        .visualizer {
+            height: 120px;
+            margin: 40px 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+        }
+        .bar {
+            width: 6px;
+            background: linear-gradient(180deg, #ff6b6b, #4ecdc4);
+            border-radius: 3px;
+            transition: height 0.1s ease;
+        }
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 40px;
         }
         .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #fff;
-            color: #667eea;
-            text-decoration: none;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            border: none;
             border-radius: 50px;
-            font-weight: bold;
+            text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
         }
-        .btn:hover {
+        .btn-primary {
+            background: linear-gradient(90deg, #ff6b6b, #ee5a52);
+        }
+        .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+        .btn-secondary {
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+        }
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
         }
         .footer {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            opacity: 0.7;
+            margin-top: 80px;
+            font-size: 0.875rem;
+            color: #6a737d;
         }
     </style>
 </head>
 <body>
+    <div class="wave-bg">
+        <div class="wave"></div>
+        <div class="wave" style="animation-delay: -5s; opacity: 0.2;"></div>
+        <div class="wave" style="animation-delay: -10s; opacity: 0.1;"></div>
+    </div>
     <div class="container">
-        <h1>🎵 音乐AI创作器</h1>
-        <p>用AI的力量，释放你的音乐灵感</p >
-        <a href=" " class="btn">开始创作</a >
+        <h1>🎵 Music AI Creator</h1>
+        <p class="subtitle">用代码与AI，谱写属于自己的旋律</p >
+        
+        <div class="visualizer" id="visualizer">
+            <!-- 动态生成的音频柱形 -->
+        </div>
+
+        <button class="play-btn" id="playBtn">▶️</button>
+
+        <div class="btn-group">
+            <a href=" " class="btn btn-primary" target="_blank">查看仓库源码</a >
+            <a href="#" class="btn btn-secondary">开始创作</a >
+        </div>
+
+        <div class="footer">
+            <p>Powered by GitHub Pages | &copy; 2026 Music AI Creator</p >
+        </div>
     </div>
-    <div class="footer">
-        &copy; 2026 My First Project | Powered by GitHub Pages
-    </div>
+
+    <!-- 隐藏的音频元素 -->
+    <audio id="audio" src="your-music.mp3" preload="auto">
+
+    <script>
+        const playBtn = document.getElementById('playBtn');
+        const visualizer = document.getElementById('visualizer');
+        const audio = document.getElementById('audio');
+        let isPlaying = false;
+        let animationId;
+        let audioContext, analyser, dataArray;
+
+        // 生成可视化柱形
+        function createBars() {
+            visualizer.innerHTML = '';
+            for (let i = 0; i < 40; i++) {
+                const bar = document.createElement('div');
+                bar.classList.add('bar');
+                visualizer.appendChild(bar);
+            }
+        }
+
+        // 初始化音频分析器
+        function initAudioContext() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            const source = audioContext.createMediaElementSource(audio);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+            analyser.fftSize = 128;
+            const bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+        }
+
+        // 动画函数
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+            analyser.getByteFrequencyData(dataArray);
+
+            const bars = document.querySelectorAll('.bar');
+            for (let i = 0; i < bars.length; i++) {
+                const value = dataArray[i] || 0;
+                const height = (value / 255) * 100 + 20;
+                bars[i].style.height = `${height}px`;
+            }
+        }
+
+        // 播放/暂停切换
+        playBtn.addEventListener('click', () => {
+            if (!audioContext) {
+                initAudioContext();
+            }
+
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸️';
+                isPlaying = true;
+                animate();
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶️';
+                isPlaying = false;
+                cancelAnimationFrame(animationId);
+            }
+        });
+
+        // 音频结束时重置按钮
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶️';
+            isPlaying = false;
+            cancelAnimationFrame(animationId);
+        });
+
+        // 初始化
+        createBars();
+    </script>
 </body>
 </html>
