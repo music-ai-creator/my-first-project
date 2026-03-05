@@ -73,3 +73,5 @@ window.onload=loadCoin
 </script>
 </body>
 </html>
+<li><a href=" " class="active">收益中心</a ></li>
+
